@@ -96,7 +96,7 @@ static VALUE gsl_vector_eql(VALUE self, VALUE ptr, VALUE other_ptr) {
 // Hide the view in a new vector (gsl_vector_subvector)
 extern "C" gsl_vector* gsl_vector_subvector_with_stride2(gsl_vector* v, size_t offset, size_t stride, size_t n) {
   gsl_vector_view view = gsl_vector_subvector_with_stride(v, offset, stride, n);
-  gsl_vector* vector_view = gsl_vector_alloc(view.vector.size);
+  gsl_vector* vector_view = (gsl_vector*) malloc(sizeof(gsl_vector));
   *vector_view = view.vector;
   return vector_view;
 }
@@ -104,7 +104,7 @@ extern "C" gsl_vector* gsl_vector_subvector_with_stride2(gsl_vector* v, size_t o
 // Hide the view in a new vector (gsl_vector_subvector)
 extern "C" gsl_vector* gsl_vector_subvector2(gsl_vector* v, size_t offset, size_t n) {
   gsl_vector_view view = gsl_vector_subvector(v, offset, n);
-  gsl_vector* vector_view = gsl_vector_alloc(view.vector.size);
+  gsl_vector* vector_view = (gsl_vector*) malloc(sizeof(gsl_vector));
   *vector_view = view.vector;
   return vector_view;
 }
@@ -240,21 +240,21 @@ static VALUE gsl_matrix_set_operator(VALUE self, VALUE ptr, VALUE element_i, VAL
 // Hide the view in a new matrix (gsl_matrix_submatrix)
 extern "C" gsl_matrix* gsl_matrix_submatrix2(gsl_matrix* m_ptr, size_t x, size_t y, size_t n, size_t m) {
   gsl_matrix_view view = gsl_matrix_submatrix(m_ptr, x, y, n, m);
-  gsl_matrix* matrix_view = gsl_matrix_alloc(view.matrix.size1, view.matrix.size2);
+  gsl_matrix* matrix_view = (gsl_matrix*) malloc(sizeof(gsl_matrix));
   *matrix_view = view.matrix;
   return matrix_view;
 }
 
 extern "C" gsl_vector* gsl_matrix_row_view(gsl_matrix* m_ptr, size_t row, size_t offset, size_t size) {
   gsl_vector_view view = gsl_matrix_subrow(m_ptr, row, offset, size);
-  gsl_vector* vector_view = gsl_vector_alloc(view.vector.size);
+  gsl_vector* vector_view = (gsl_vector*) malloc(sizeof(gsl_vector));
   *vector_view = view.vector;
   return vector_view;
 }
 
 extern "C" gsl_vector* gsl_matrix_column_view(gsl_matrix* m_ptr, size_t column, size_t offset, size_t size) {
   gsl_vector_view view = gsl_matrix_subcolumn(m_ptr, column, offset, size);
-  gsl_vector* vector_view = gsl_vector_alloc(view.vector.size);
+  gsl_vector* vector_view = (gsl_vector*) malloc(sizeof(gsl_vector));
   *vector_view = view.vector;
   return vector_view;
 }
